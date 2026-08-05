@@ -1,0 +1,129 @@
+// =====================================================================
+//  INHN0006 practice project -- Mocking / Testing / REST drills.
+//
+//  Deliberately NOT using the Spring Boot Gradle plugin: it would force a
+//  single main class on a project that ships several runnable servers, and
+//  bootJar/bootRun failures would block `gradlew test` -- which is the one
+//  command that must never break. The Spring Boot BOM below pins exactly the
+//  same library versions the plugin would, so the code you write here is
+//  byte-for-byte what compiles on the Artemis exam project.
+// =====================================================================
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    springBootVersion = '3.2.5'   // Spring Boot 3.2.x, as on the exam machine
+    junitVersion      = '5.10.2'  // JUnit Jupiter 5.10.x
+    easymockVersion   = '5.2.0'   // EasyMock 5.2.0
+}
+
+// The exam machine runs Java 17. This box has 21, so compile with --release 17:
+// same bytecode level AND the same visible API surface, so nothing you write
+// here can accidentally depend on a Java 18+ method.
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+tasks.withType(JavaCompile).configureEach {
+    options.release = 17
+    options.encoding = 'UTF-8'
+    // Keeps method parameter names in the bytecode. Spring needs them to resolve
+    // @PathVariable Long productId without an explicit name. The Spring Boot Gradle
+    // plugin adds this for you; without it you get, at REQUEST time rather than at
+    // compile time:
+    //   "Name for argument of type [java.lang.Long] not specified, and parameter name
+    //    information not available via reflection. Ensure that the compiler uses the
+    //    '-parameters' flag."
+    // The other fix is to name every binding explicitly: @PathVariable("productId").
+    options.compilerArgs << '-parameters'
+}
+
+dependencies {
+    implementation     platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+    testImplementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'      // server: @RestController, MockMvc
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'  // client: WebClient
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation "org.junit.jupiter:junit-jupiter:${junitVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-params:${junitVersion}"
+    testImplementation "org.easymock:easymock:${easymockVersion}"
+
+    // The mutation drill runs test classes programmatically and asserts they FAIL.
+    // That needs the launcher on the compile classpath, not only the runtime one.
+    testImplementation 'org.junit.platform:junit-platform-launcher'
+    testRuntimeOnly    'org.junit.platform:junit-platform-launcher'
+}
+
+// ---------------------------------------------------------------------
+//  `test` = the green suite.
+//  Everything tagged "mutant" is a test class that is SUPPOSED to fail
+//  (it runs the same assertions against a deliberately broken SUT), so it is
+//  excluded here and executed only from inside MutationDrillTest.
+// ---------------------------------------------------------------------
+test {
+    useJUnitPlatform {
+        excludeTags 'mutant'
+    }
+    testLogging {
+        events 'failed', 'skipped'
+        exceptionFormat = 'full'
+        showStandardStreams = false
+    }
+    // Lifecycle demos print to stdout; keep the suite output readable by default.
+    systemProperty 'java.util.logging.ConsoleHandler.level', 'WARNING'
+}
+
+// ---------------------------------------------------------------------
+//  PART 4 -- the study artefact.
+//  `gradlew.bat mutationReport` runs the whole drill and prints the summary
+//  table: every mutation, and whether the corresponding test caught it.
+// ---------------------------------------------------------------------
+tasks.register('mutationReport', Test) {
+    group = 'verification'
+    description = 'Runs every broken implementation against its test class and prints which mutation each assertion catches.'
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    useJUnitPlatform {
+        excludeTags 'mutant'
+    }
+    filter {
+        includeTestsMatching 'ise.drill.MutationDrillTest'
+    }
+    testLogging {
+        showStandardStreams = true   // the summary table is printed to stdout
+        events 'failed'
+        exceptionFormat = 'full'
+    }
+    outputs.upToDateWhen { false }   // always re-run; this is a report, not a build step
+}
+
+// ---------------------------------------------------------------------
+//  Runnable servers (replacements for `bootRun`).
+// ---------------------------------------------------------------------
+tasks.register('runProductServer', JavaExec) {
+    group = 'application'
+    description = 'Starts the Product REST server on http://localhost:8080'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'ise.rest.server.ServerApplication'
+}
+
+tasks.register('runPracticeServer', JavaExec) {
+    group = 'application'
+    description = 'Starts the REST practice drill server on http://localhost:8082'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'ise.rest.practice.PracticeServerApplication'
+}
+
+tasks.register('runPulloverServer', JavaExec) {
+    group = 'application'
+    description = 'Starts the exam Pullover Stock server on http://localhost:8081'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'ise.rest.exam_pullover.PulloverServerApplication'
+}
