@@ -8,7 +8,7 @@ Regenerate with:
 .\gradlew.bat mutationReport
 ```
 
-**40 mutations, 40 caught.** Every row below was executed: the broken implementation
+**51 mutations, 51 caught.** Every row below was executed: the broken implementation
 is a real class in `src/test/java/ise/mutants/`, and `ise.drill.MutationDrillTest`
 asserts that the corresponding test class goes red against it. Nothing here is a
 claim — if a row stopped being true, `gradlew test` would fail.
@@ -68,11 +68,27 @@ assertion did the work**, and therefore which line you cannot afford to leave ou
 | `exam_cart` | Discount rate ignored | `testApplyDiscount` → `assertEquals(20.25, …)` | Had the test used rate 0.0 or an empty cart, both versions agree and the mutant survives. |
 | `exam_cart` | `removeProduct()` clears the whole cart | `testRemoveProduct` → count 1 **and** remaining total 2.50 | The remaining **total** is what names *which* product survived. |
 
+## Mock exam (Jun 2026) — the new exercises
+
+| Exercise | Mutation applied | Caught by | Why nothing else catches it |
+|---|---|---|---|
+| **Mocking, SmartHome** | `register()` never called on the device | `testAddDevice` → **`verify(deviceMock)`** | ⚠️ The list is still updated and `true` is still returned, so the state assertion AND the return-value assertion both stay green. `register` returns void — `verify()` is the only witness. |
+| Mocking, SmartHome | duplicate check dropped | `testAddDeviceTwiceIsRefused` → unexpected second `register()`, size 1, return `false` | Caught three ways; a test without the second `addDevice` call catches none of them. |
+| Mocking, SmartHome | `removeDevice` reports success without removing | `testRemoveDevice` → `assertEquals(0, getDevices().size())` | The return value is `true` in both versions. This is why the task says "attributes updated **correctly**". |
+| **Mocking, SmartHome** | `sendCommand` does nothing | `testSendCommand` → **`verify(deviceMock)`** | ⚠️ `sendCommand` returns void and changes no SmartHome state. There is literally no other observable difference. |
+| Mocking, SmartHome | unregistered device is commanded anyway | `testSendCommandToUnknownDevice` → the **unrecorded** mock | The must-not-be-called pattern, in the new exam. |
+| **SOLID** | `PrerequisiteRule` blocks courses with no prerequisite | `noPrerequisiteDoesNotBlock` — **and nothing else** | ⚠️ The "completed" and "missing" prerequisite tests both still pass. The null branch is the entire task-1 mark. |
+| SOLID | only the student is updated, not the course | `successUpdatesBothSides` → the course-side assertions | Checking only the student passes, and the course then still reports a free seat it has given away. |
+| SOLID | state mutated before the rules are evaluated | `failureModifiesNothing` → the state assertions after the refusal | The return value is `false` either way. |
+| SOLID | duplicate enrollment check missing | `duplicateIsRejected` → sizes of 1 on both sides | Both return values still look plausible; only the counts expose it. |
+| **Black box** | off-by-one at the VIP lower limit (`>=` → `>`) | **TC11 (level 10)** — and nothing else | ⚠️ TC10 (9) and TC12 (11) both pass. The value exactly *on* an inclusive boundary is the entire point of the three-point rule. |
+| Acceptance | invalid credentials are accepted | the second Gherkin scenario → `assertFalse(isAccessGranted())` | A happy-path-only scenario set never notices. Hence "two scenarios". |
+
 ---
 
 ## Did any mutation escape?
 
-No. All 40 were caught on the first run, so no test needed strengthening after the
+No. All 51 were caught on the first run, so no test needed strengthening after the
 fact. Three tests were, however, **written deliberately** to survive a mutation and
 are kept in the suite as labelled counter-examples:
 

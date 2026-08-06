@@ -131,7 +131,31 @@ class MutationDrillTest {
             new Mutant("mocking", "exam_vehicle", "driver never told about the vehicle",
                     "ise.mutants.mocking.VehicleManagementSystemTest_ForgetsTheDriver"),
             new Mutant("mocking", "exam_docking", "dock() never executed",
-                    "ise.mutants.mocking.DockingControlSystemTest_NeverDocks"));
+                    "ise.mutants.mocking.DockingControlSystemTest_NeverDocks"),
+
+            // ---- MOCK EXAM (Jun 2026) -----------------------------------
+            new Mutant("mocking", "exam_smarthome", "register() never called on the device",
+                    "ise.mutants.mockexam.SmartHomeTest_NeverRegisters"),
+            new Mutant("mocking", "exam_smarthome", "duplicate check dropped",
+                    "ise.mutants.mockexam.SmartHomeTest_AllowsDuplicates"),
+            new Mutant("mocking", "exam_smarthome", "removeDevice reports success without removing",
+                    "ise.mutants.mockexam.SmartHomeTest_NeverRemoves"),
+            new Mutant("mocking", "exam_smarthome", "sendCommand does nothing",
+                    "ise.mutants.mockexam.SmartHomeTest_SwallowsCommands"),
+            new Mutant("mocking", "exam_smarthome", "unregistered device is commanded anyway",
+                    "ise.mutants.mockexam.SmartHomeTest_CommandsAnything"),
+            new Mutant("solid", "exam_enrollment", "PrerequisiteRule blocks courses with no prerequisite",
+                    "ise.mutants.mockexam.PrerequisiteRuleTest_BlocksEverything"),
+            new Mutant("solid", "exam_enrollment", "only the student is updated, not the course",
+                    "ise.mutants.mockexam.EnrollmentServiceTest_ForgetsTheCourse"),
+            new Mutant("solid", "exam_enrollment", "state mutated before the rules are evaluated",
+                    "ise.mutants.mockexam.EnrollmentServiceTest_MutatesTooEarly"),
+            new Mutant("solid", "exam_enrollment", "duplicate enrollment check missing",
+                    "ise.mutants.mockexam.EnrollmentServiceTest_NoDuplicateCheck"),
+            new Mutant("blackbox", "exam_gamelauncher", "off-by-one at the VIP lower limit (>= becomes >)",
+                    "ise.mutants.mockexam.GameLauncherTest_OffByOneVipLimit"),
+            new Mutant("acceptance", "exam_login", "invalid credentials are accepted",
+                    "ise.mutants.mockexam.LoginServiceTest_TrustsEveryone"));
 
     /** Runs one mutant test class and reports how many of its tests failed. */
     private static TestExecutionSummary run(String testClassName) {
@@ -214,6 +238,14 @@ class MutationDrillTest {
         // and the mock-type/call-order comparisons, which already assert their own
         // failures inline with assertThrows(AssertionError.class, ...).
         assertEquals(17, testingScenarios, "a testing scenario lost its mutant");
-        assertEquals(11, mockingScenarios, "a mocking scenario lost its mutant");
+        assertEquals(12, mockingScenarios, "a mocking scenario lost its mutant");
+
+        // The June 2026 mock exam added three areas that are not mocking or testing.
+        long mockExamAreas = MUTANTS.stream()
+                .map(Mutant::area)
+                .filter(a -> "solid".equals(a) || "blackbox".equals(a) || "acceptance".equals(a))
+                .distinct()
+                .count();
+        assertEquals(3, mockExamAreas, "a mock-exam area lost its mutant");
     }
 }

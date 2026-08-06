@@ -36,8 +36,8 @@ Start a server:
 
 | Task | What it does |
 |---|---|
-| `test` | The whole green suite (296 tests, 30 deliberately skipped) |
-| `mutationReport` | Runs all 40 broken implementations and prints the catch table |
+| `test` | The whole green suite (353 tests, 30 deliberately skipped) |
+| `mutationReport` | Runs all 51 broken implementations and prints the catch table |
 | `runProductServer` | Product REST server on `http://localhost:8080` |
 | `runPulloverServer` | Retake-exam Pullover server on `http://localhost:8081` |
 | `runPracticeServer` | REST practice drill server on `http://localhost:8082` |
@@ -58,16 +58,25 @@ src/test/java/ise/
     mocking/   the EasyMock tests
     testing/   the JUnit tests
     rest/      MockMvc endpoint tests + the WebFlux client test
-    mutants/   40 broken implementations + their tagged test classes
+    mutants/   51 broken implementations + their tagged test classes
     drill/     MutationDrillTest — runs every mutant, asserts each goes red
     practice/  gutted drills + generated solutions
 docs/
     README.md          this file
     SCENARIO_INDEX.md  every scenario, its package, and the one rule to remember
     EXAM_DRILLS.md     the mutation table — scenario → mutation → catching assertion
+    MOCK_EXAM.md       the Jun 2026 mock exam: new format, worked answers, quiz key
 ```
 
-104 main classes, 61 test classes.
+Plus three areas added by the June 2026 mock exam, which dropped REST entirely:
+
+```
+src/main/java/ise/
+    solid/       exam_enrollment/   SOLID principles — 25 pts
+    blackbox/    exam_gamelauncher/ equivalence classes + boundary values — 10 pts
+    acceptance/  exam_login/        Gherkin acceptance tests — 5 pts
+    mocking/     exam_smarthome/    the new mocking exercise — 25 pts
+```
 
 ---
 

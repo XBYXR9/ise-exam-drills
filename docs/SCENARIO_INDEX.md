@@ -73,6 +73,21 @@ exam pressure.
 
 ---
 
+## Mock exam additions (TEST Exam v2, Jun 2026)
+
+The format changed: no REST exercise, Mocking worth 25 and SOLID worth 25.
+Full breakdown and the worked text answers are in `MOCK_EXAM.md`.
+
+| Package | Exercise | The rule |
+|---|---|---|
+| `ise.mocking.exam_smarthome` | Ex. 3 -- Mocking, 25 pts | Both collaborator methods return **void**, so `verify()` is the entire test. Two solutions: EasyMock and the hand-written `DeviceMock` from the exam UML. |
+| `ise.solid.exam_enrollment` | Ex. 5 -- SOLID, 25 pts | The service depends on `EnrollmentRule`, never on a concrete rule. No `instanceof`, ever. Evaluate ALL rules before mutating anything. |
+| `ise.blackbox.exam_gamelauncher` | Ex. 4 -- Black box, 10 pts | Partition per parameter, one representative per class, then L-1/L/L+1 on every inclusive limit. The value exactly ON the boundary is the one that earns the mark. |
+| `ise.acceptance.exam_login` | Ex. 1 -- Gherkin, 5 pts | Given = Arrange, When = Act, Then = Assert. Two Given steps and two Then steps minimum, one step per line. |
+| `ise.testing.s18_testdoubles` | Quiz Q15 | STUB feeds values IN; SPY and MOCK check what came OUT; DUMMY is never called; FAKE is a real but simplified implementation. |
+
+---
+
 ## Errors and omissions in the playbook PDF
 
 I am flagging these because you said you intend to memorise it.
