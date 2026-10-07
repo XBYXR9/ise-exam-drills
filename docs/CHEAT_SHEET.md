@@ -2,8 +2,8 @@
 
 Built from: the 2026 endterm result sheet, your *Final Guide*, the *if-in-test*, *black-box* and
 *BIE setup* sheets, the component-diagram picture, and the two code templates.
-Copy-paste ready templates: [`templates/TestTemplate.java`](templates/TestTemplate.java),
-[`templates/MockTemplate.java`](templates/MockTemplate.java).
+Copy-paste templates for every kind of task (implement, JUnit, parameterized, EasyMock x2, REST impl, REST test,
+black-box, Gherkin): see [`templates/README.md`](templates/README.md).
 
 ---
 
