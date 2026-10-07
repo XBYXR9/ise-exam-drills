@@ -8,7 +8,7 @@ Regenerate with:
 .\gradlew.bat mutationReport
 ```
 
-**51 mutations, 51 caught.** Every row below was executed: the broken implementation
+**56 mutations, 56 caught.** Every row below was executed: the broken implementation
 is a real class in `src/test/java/ise/mutants/`, and `ise.drill.MutationDrillTest`
 asserts that the corresponding test class goes red against it. Nothing here is a
 claim — if a row stopped being true, `gradlew test` would fail.
@@ -83,6 +83,16 @@ assertion did the work**, and therefore which line you cannot afford to leave ou
 | SOLID | duplicate enrollment check missing | `duplicateIsRejected` → sizes of 1 on both sides | Both return values still look plausible; only the counts expose it. |
 | **Black box** | off-by-one at the VIP lower limit (`>=` → `>`) | **TC11 (level 10)** — and nothing else | ⚠️ TC10 (9) and TC12 (11) both pass. The value exactly *on* an inclusive boundary is the entire point of the three-point rule. |
 | Acceptance | invalid credentials are accepted | the second Gherkin scenario → `assertFalse(isAccessGranted())` | A happy-path-only scenario set never notices. Hence "two scenarios". |
+
+## ISE HN 2026 endterm (Aug 2026) — CloudServer and Graphics
+
+| Exercise | Mutation applied | Caught by | Why nothing else catches it |
+|---|---|---|---|
+| **`exam_cloudserver`** | `freeRam` wraps with `%` instead of capping (the bug in the exam's own starter code) | `testFreeRamCap` → `assertEquals(680.0, …)` | ⚠️ `testFreeRamNormal` passes — 23 is below the cap, so `%` and `min` agree. Only a value **above** the cap tells them apart. |
+| `exam_cloudserver` | the +40 speed bonus is never added | `testSuccessfulAllocationSameTier` → the speed assertion | `isSuccess()`, the cost and the RAM left are all unchanged, so only the speed line notices. |
+| `exam_cloudserver` | same-tier discount ignored (always 1.5 × load) | `testSuccessfulAllocationSameTier` → cost 3.0 and RAM 47.0 | The different-tier test uses 1.5 anyway — it cannot see this. |
+| **`exam_cloudserver`** | `ram < cost` became `ram <= cost` | `testAllocationWithExactlyEnoughRamSucceeds` — **and nothing else** | ⚠️ The insufficient-RAM test (10 vs 15) fails the same way in both versions. The exact-fit case is the only one that separates `<` from `<=`. |
+| **Black box, `exam_graphics`** | baseline exclusive: `2048` → `unsupported` | **TC11 (Mobile, 2048)** — and nothing else | ⚠️ TC10 (2047) and TC12 (2049) both pass. Same lesson as the game launcher: the marks are on the value *at* the limit. |
 
 ---
 

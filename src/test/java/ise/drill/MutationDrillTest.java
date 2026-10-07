@@ -155,7 +155,19 @@ class MutationDrillTest {
             new Mutant("blackbox", "exam_gamelauncher", "off-by-one at the VIP lower limit (>= becomes >)",
                     "ise.mutants.mockexam.GameLauncherTest_OffByOneVipLimit"),
             new Mutant("acceptance", "exam_login", "invalid credentials are accepted",
-                    "ise.mutants.mockexam.LoginServiceTest_TrustsEveryone"));
+                    "ise.mutants.mockexam.LoginServiceTest_TrustsEveryone"),
+
+            // ---- ISE HN 2026 exam (CloudServer) -------------------------
+            new Mutant("testing", "exam_cloudserver", "freeRam wraps with % instead of capping (the starter-code bug)",
+                    "ise.mutants.testing.CloudServerTest_WrapsAround"),
+            new Mutant("testing", "exam_cloudserver", "the +40 same-tier speed bonus is never added",
+                    "ise.mutants.testing.CloudServerTest_NoBonus"),
+            new Mutant("testing", "exam_cloudserver", "same-tier RAM discount ignored",
+                    "ise.mutants.testing.CloudServerTest_NoDiscount"),
+            new Mutant("testing", "exam_cloudserver", "ram < cost became ram <= cost",
+                    "ise.mutants.testing.CloudServerTest_OffByOneFit"),
+            new Mutant("blackbox", "exam_graphics", "off-by-one at the baseline (>= 2048 becomes > 2048)",
+                    "ise.mutants.testing.GraphicsConfiguratorTest_OffByOneBaseline"));
 
     /** Runs one mutant test class and reports how many of its tests failed. */
     private static TestExecutionSummary run(String testClassName) {
@@ -237,7 +249,7 @@ class MutationDrillTest {
         // reason: lifecycle demos, the assumption probe, the EasyMock error catalogue,
         // and the mock-type/call-order comparisons, which already assert their own
         // failures inline with assertThrows(AssertionError.class, ...).
-        assertEquals(17, testingScenarios, "a testing scenario lost its mutant");
+        assertEquals(18, testingScenarios, "a testing scenario lost its mutant");
         assertEquals(12, mockingScenarios, "a mocking scenario lost its mutant");
 
         // The June 2026 mock exam added three areas that are not mocking or testing.

@@ -127,3 +127,10 @@ tasks.register('runPulloverServer', JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     mainClass = 'ise.rest.exam_pullover.PulloverServerApplication'
 }
+
+tasks.register('runTicketServer', JavaExec) {
+    group = 'application'
+    description = 'Starts the ISE HN 2026 Ticket Manager server on http://localhost:8083'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'ise.rest.exam_ticket.TicketServerApplication'
+}

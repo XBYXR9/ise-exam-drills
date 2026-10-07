@@ -36,11 +36,12 @@ Start a server:
 
 | Task | What it does |
 |---|---|
-| `test` | The whole green suite (353 tests, 30 deliberately skipped) |
-| `mutationReport` | Runs all 51 broken implementations and prints the catch table |
+| `test` | The whole green suite (423 tests, 33 deliberately skipped) |
+| `mutationReport` | Runs all 56 broken implementations and prints the catch table |
 | `runProductServer` | Product REST server on `http://localhost:8080` |
 | `runPulloverServer` | Retake-exam Pullover server on `http://localhost:8081` |
 | `runPracticeServer` | REST practice drill server on `http://localhost:8082` |
+| `runTicketServer` | ISE HN 2026 Ticket Manager server on `http://localhost:8083` |
 
 Import into IntelliJ IDEA as a **Gradle** project (`File > Open` → pick
 `build.gradle` → *Open as Project*).
@@ -58,7 +59,7 @@ src/test/java/ise/
     mocking/   the EasyMock tests
     testing/   the JUnit tests
     rest/      MockMvc endpoint tests + the WebFlux client test
-    mutants/   51 broken implementations + their tagged test classes
+    mutants/   56 broken implementations + their tagged test classes
     drill/     MutationDrillTest — runs every mutant, asserts each goes red
     practice/  gutted drills + generated solutions
 docs/
@@ -66,6 +67,10 @@ docs/
     SCENARIO_INDEX.md  every scenario, its package, and the one rule to remember
     EXAM_DRILLS.md     the mutation table — scenario → mutation → catching assertion
     MOCK_EXAM.md       the Jun 2026 mock exam: new format, worked answers, quiz key
+    ISEHN_2026_EXAM.md the real Aug 2026 endterm: all 5 exercises solved + what the grader docked
+    CHEAT_SHEET.md     one-file cheat sheet: JUnit, EasyMock, REST, black-box, UML, quiz, git, setup
+    PRACTICE_QUESTIONS.md  new questions in the 2026 shapes, with answers
+    templates/         TestTemplate.java and MockTemplate.java, copy-paste ready
 ```
 
 Plus three areas added by the June 2026 mock exam, which dropped REST entirely:
@@ -76,6 +81,16 @@ src/main/java/ise/
     blackbox/    exam_gamelauncher/ equivalence classes + boundary values — 10 pts
     acceptance/  exam_login/        Gherkin acceptance tests — 5 pts
     mocking/     exam_smarthome/    the new mocking exercise — 25 pts
+
+And the real August 2026 endterm (see `docs/ISEHN_2026_EXAM.md`):
+
+```
+src/main/java/ise/
+    testing/     exam_cloudserver/  implement 2 methods + 5 tests — 20 pts
+    rest/        exam_ticket/       Ticket Manager, 5 endpoints — 25 pts (run: runTicketServer)
+    blackbox/    exam_graphics/     equivalence classes + boundaries — 15 pts
+    blackbox/    practice_streaming/ extra black-box practice
+```
 ```
 
 ---
