@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * ISE HN 2026 exam, exercise 1, tasks 2-6 -- the five tests.
  *
- * WHAT WAS WRONG IN THE STARTER TESTS (every one of these loses marks)
+ * WHAT WAS WRONG IN THE TESTS YOU SUBMITTED (every one of these loses marks)
  *   1. `allocationResult` was never assigned. The call was `cloudServer.allocateTask(...)`
  *      with the return value thrown away, so `allocationResult.isSuccess()` was a
  *      NullPointerException. Always write  `AllocationResult result = server.allocateTask(...)`.

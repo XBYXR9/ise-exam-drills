@@ -4,6 +4,8 @@ Built from: the 2026 endterm result sheet, your *Final Guide*, the *if-in-test*,
 *BIE setup* sheets, the component-diagram picture, and the two code templates.
 Copy-paste templates for every kind of task (implement, JUnit, parameterized, EasyMock x2, REST impl, REST test,
 black-box, Gherkin): see [`templates/README.md`](templates/README.md).
+The original PDFs are in [`pdfs/`](pdfs/README.md). Your long lecture-based reference, searchable with Ctrl+F tags
+(`#easymock`, `#rest`, `#bva`, `#quizbank` …), is [`ISE_Master_Cheatsheet.md`](ISE_Master_Cheatsheet.md).
 
 ---
 
@@ -58,7 +60,7 @@ normal case · other branch (the `else`) · failure case (**state unchanged**) �
 check return **and** stored state) · **exact boundary** (`ram == cost` must succeed when the check is `<`) ·
 invalid input (0 / negative → nothing changes) · exception (only if the task says one is thrown).
 
-**Traps:** integer division (`160/15 = 10`; write `80.0`) · `%` is not a cap, `Math.min` is · compare
+**Traps:** the result of the method under test **must be stored** (`AllocationResult r = server.allocateTask(...)`) — in 2026 one missing line killed 4 tests · integer division (`160/15 = 10`; write `80.0`) · `%` is not a cap, `Math.min` is · compare
 a speed to a speed, not to a cost · remember the *starting* value (`10 + 13 = 23`, not 13) · failed
 path must not mutate (compute → check → mutate) · `assertTrue(result == 32.0)` **is** a correct
 check when the value is exactly representable.
@@ -154,8 +156,8 @@ Client half (rarely asked): `webClient.post().uri("/x").bodyValue(o).retrieve().
 | "Valid" = accepted and evaluated | A valid input may produce `rejected`/`unsupported`-style output; that is not "Invalid" |
 | One catch-all Invalid class per parameter | "any other value or empty input" |
 | Give every class an id, and write a coverage note | `TC1–TC3 cover …` is its own scoring criterion |
-| Minimal set | one test per class, **only one invalid parameter at a time** |
-| Three-point boundary | **L−1, L, L+1 around the limit named in the heading**; L is the first valid value. If 1 is the smallest legal value test 0 / 1 / 2 |
+| Minimal set | one test per class, **only one invalid parameter at a time** · **never leave a `<fill>` or a cell blank** (a blank is 0) · expected results are exactly the allowed words (`performance` / `quality` / `unsupported`), never a comment |
+| Three-point boundary | **three single numbers, not ranges**, around the limit named in the heading: **L−1, L, L+1**; L is the first valid value (2047 / 2048 / 2049, not `2048 <= vramMB <= 16384`). If 1 is the smallest legal value test 0 / 1 / 2 |
 | The marks are on the `L` row | it is the only one that fails when `>=` is typed as `>` |
 
 Quick table version (works on any "input → output" task): bad inputs one row each (negative, too big,
@@ -178,6 +180,8 @@ Worked, verified answers: `ise.blackbox.exam_graphics` (2026), `ise.blackbox.exa
 | Component | box `«component»` inside a node | software unit |
 | Communication path | **plain line node↔node, no arrowhead**, label = protocol (`TLS`, `NFC`, `gRPC`, `MQTT`, `HTTPS`, `Wi-Fi`) | one line per "communicates with" sentence |
 | Interface | lollipop `○—` (provided) + socket `—⊂` (required), **component↔component**, labelled with the **service name** | never "Interface"; drawing TLS as a lollipop is a real mistake |
+
+**Draw everything the statement lists, and only that** — in 2026 only a few boxes were drawn and 16 of 20 points were lost. «artifact» for "runs … artifact", «component» for "deploys … component", and a communication path is a plain line, **never a lollipop**.
 
 Build order: nodes → nest artifacts/components → paths with protocol labels → read the Hint → interfaces named from the text → spell-check stereotypes. Add **nothing** the statement does not mention.
 
@@ -213,6 +217,12 @@ The component-diagram picture you sent (smart home) follows exactly this: Smartp
 | Reviews | log defects, **defer solutions**; no justification-before-logging, no interruptions |
 | Requirements | functional = what · non-functional = how well (usability, performance, reliability, security, safety, accessibility). **INVEST**: Independent, Negotiable, Valuable, Estimable, Small, **Testable** ("helpful" is not testable). Epic > Story > Task |
 | Design principles | **Open–Closed** (open for extension, closed for modification) · Dependency Inversion · information hiding · low coupling / high cohesion |
+| Process models | **Incremental** = several usable parts, each adds functionality · **Waterfall** = largely sequential phases · **Kanban** = board, cards left to right, **WIP limit** per stage (no fixed sprints) · **Scrum**: Sprints + Sprint Review; the **Scrum Master** facilitates and removes impediments, the Product Owner owns the backlog |
+| Software characteristics | software has **no natural locality**, so SE must create distance and isolation (memory does *not* do it) · reuse is lucrative only when little customisation is needed — it is not always cheap |
+| Models | **Mapping** (represents an original) · **Abstraction/Reduction** (leaves details out) · **Pragmatics** (made for a purpose, audience, time) · **Descriptive** (what is) vs **Prescriptive** (what should be) |
+| Design | `new ConcreteClass()` inside a high-level class violates **Dependency Inversion** → introduce an interface and inject it. New formats without editing old code → **interface + one implementation per format** (Open–Closed) |
+| Domain-driven design | **Core Domain** = the organisation's main competitive advantage (never outsource it) |
+| Maintenance | adapts software to changed **requirements** and **technology** (not CPU temperature) |
 | Quiz tactics | "choose all correct": tick an option if > 50 % sure; grade each option for truth, not style; distractors = impossible for the type · contradict the spec · wrong test level |
 
 ---
