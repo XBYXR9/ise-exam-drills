@@ -3,6 +3,40 @@
 Always three parts. Copy the **exact** template the task gives you and replace only the `<fill>` cells.
 Use `|` separators and keep the pre-filled columns.
 
+## How to know which sentence is which cell (read this first)
+
+The exam gives you the answer template **half filled**. The pre-filled cells are clues, and the task text has
+**one sentence per class**. So the job is "cross off", not "invent".
+
+| Sentence in the task | Becomes |
+|---|---|
+| "Valid devices are X and Y; anything else is invalid" | 3 text classes: X (valid), Y (valid), other (invalid) |
+| "On X, 2048–4096 gives A. 4097–16384 gives B." | 2 valid number classes for X |
+| "On Y, 2048–8192 gives A. 8193–16384 gives B." | 2 valid number classes for Y |
+| "<= 2047 is unsupported" | 1 invalid class (low side) |
+| ">= 16385 is unsupported" | 1 invalid class (high side) |
+
+Steps:
+1. Underline every range / value sentence in the task and number them. **That count must equal the number of class rows.**
+2. Write each class on scrap paper (or in the answer box). Cross out the ones the template already shows.
+3. The classes left over are the blanks. Type them in the `<fill>` cells, keep the `|` separators.
+4. Part 2: each row must cover a class you have not used yet. Tick a class when a row covers it. Never break two inputs in one row.
+   If a cell is blank, work it out from the other cells: the expected result and the number tell you the device.
+5. Part 3: the **heading** names the boundary. Find that limit in the text, then write L-1, L, L+1 for that one device.
+
+Worked mapping from the 2026 exam (Graphics Configurator):
+
+```
+DC1 = "Mobile" is valid           VC1 = <= 2047            (given in the template)
+DC2 = "Console" is valid          VC2 = Mobile 2048..4096  (performance)   <- blank, from sentence "On Mobile ..."
+DC3 = anything else is invalid    VC3 = Mobile 4097..16384 (quality)       (given)
+                                  VC4 = Console 2048..8192 (performance)   <- blank
+                                  VC5 = Console 8193..16384 (quality)      <- blank
+                                  VC6 = >= 16385                           <- blank, from sentence "Hardware Memory Ceiling"
+TC1 Mobile + too low  | TC2 Mobile 3000 -> VC2 | TC3 Mobile 6000 -> VC3 | TC4 -> VC4 | TC5 Console 12000 -> VC5
+TC6 -> VC6 | TC7 Handheld -> DC3     Part 3 heading "Mobile Minimum Engine Baseline" -> 2047 / 2048 / 2049
+```
+
 ## Step 0 — read the rules and mark every limit (30 s)
 
 ```
