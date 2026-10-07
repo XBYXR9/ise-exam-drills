@@ -8,11 +8,11 @@ package ise.testing.exam_cloudserver;
  *                  speed = optimizationLevel * 80.0 / (taskLoad + 10.0)   (+40.0 if it matches)
  *   freeRam:       freed = amount * (1.2 + optimizationLevel * 0.05), then CAP at 600 + level * 40
  *
- * The starter code that came with the exam had two traps, both fixed here:
- *   1. freeRam used  ram % cap  -- a modulo WRAPS around to a small number instead of
- *      stopping at the cap. "Never exceeds the cap" means Math.min, not %.
- *   2. nothing in the starter stopped the failed branch from touching state; the task says
- *      "do not modify the server's RAM" on failure, so the check must come BEFORE the deduction.
+ * The bug in the code you submitted, fixed here:
+ *   freeRam used  ram % cap  -- a modulo WRAPS around to a small number instead of
+ *   stopping at the cap. "Never exceeds the cap" means Math.min, not %.
+ * Also keep in mind: the failed branch must not touch state ("do not modify the server's RAM"),
+ * so the check must come BEFORE the deduction.
  */
 public class CloudServer {
 

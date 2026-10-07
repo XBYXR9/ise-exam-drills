@@ -158,7 +158,7 @@ class MutationDrillTest {
                     "ise.mutants.mockexam.LoginServiceTest_TrustsEveryone"),
 
             // ---- ISE HN 2026 exam (CloudServer) -------------------------
-            new Mutant("testing", "exam_cloudserver", "freeRam wraps with % instead of capping (the starter-code bug)",
+            new Mutant("testing", "exam_cloudserver", "freeRam wraps with % instead of capping (the bug in the submitted code)",
                     "ise.mutants.testing.CloudServerTest_WrapsAround"),
             new Mutant("testing", "exam_cloudserver", "the +40 same-tier speed bonus is never added",
                     "ise.mutants.testing.CloudServerTest_NoBonus"),

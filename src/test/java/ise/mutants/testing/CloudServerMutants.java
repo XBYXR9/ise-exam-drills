@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Tag;
 
 /**
  * MUTANTS for ISE HN 2026 exercise 1 (CloudServer). Each one is a plausible defect a grader
- * would inject -- the first is the real bug the exam's own starter code shipped with.
+ * would inject -- the first is the real bug in the code you submitted.
  */
 final class CloudServerMutants {
 
@@ -18,7 +18,7 @@ final class CloudServerMutants {
     }
 }
 
-/** freeRam wraps with % instead of capping -- the bug in the exam starter code. */
+/** freeRam wraps with % instead of capping -- the bug in the code you submitted. */
 class CloudServerThatWrapsAround extends CloudServer {
     private double ramShadow;
 

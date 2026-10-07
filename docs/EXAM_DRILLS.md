@@ -88,7 +88,7 @@ assertion did the work**, and therefore which line you cannot afford to leave ou
 
 | Exercise | Mutation applied | Caught by | Why nothing else catches it |
 |---|---|---|---|
-| **`exam_cloudserver`** | `freeRam` wraps with `%` instead of capping (the bug in the exam's own starter code) | `testFreeRamCap` → `assertEquals(680.0, …)` | ⚠️ `testFreeRamNormal` passes — 23 is below the cap, so `%` and `min` agree. Only a value **above** the cap tells them apart. |
+| **`exam_cloudserver`** | `freeRam` wraps with `%` instead of capping (the bug in the code you submitted) | `testFreeRamCap` → `assertEquals(680.0, …)` | ⚠️ `testFreeRamNormal` passes — 23 is below the cap, so `%` and `min` agree. Only a value **above** the cap tells them apart. |
 | `exam_cloudserver` | the +40 speed bonus is never added | `testSuccessfulAllocationSameTier` → the speed assertion | `isSuccess()`, the cost and the RAM left are all unchanged, so only the speed line notices. |
 | `exam_cloudserver` | same-tier discount ignored (always 1.5 × load) | `testSuccessfulAllocationSameTier` → cost 3.0 and RAM 47.0 | The different-tier test uses 1.5 anyway — it cannot see this. |
 | **`exam_cloudserver`** | `ram < cost` became `ram <= cost` | `testAllocationWithExactlyEnoughRamSucceeds` — **and nothing else** | ⚠️ The insufficient-RAM test (10 vs 15) fails the same way in both versions. The exact-fit case is the only one that separates `<` from `<=`. |
