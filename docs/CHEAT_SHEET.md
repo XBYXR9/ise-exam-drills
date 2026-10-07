@@ -4,6 +4,8 @@ Built from: the 2026 endterm result sheet, your *Final Guide*, the *if-in-test*,
 *BIE setup* sheets, the component-diagram picture, and the two code templates.
 Copy-paste templates for every kind of task (implement, JUnit, parameterized, EasyMock x2, REST impl, REST test,
 black-box, Gherkin): see [`templates/README.md`](templates/README.md).
+The original PDFs are in [`pdfs/`](pdfs/README.md). Your long lecture-based reference, searchable with Ctrl+F tags
+(`#easymock`, `#rest`, `#bva`, `#quizbank` …), is [`ISE_Master_Cheatsheet.md`](ISE_Master_Cheatsheet.md).
 
 ---
 

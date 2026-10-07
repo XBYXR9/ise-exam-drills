@@ -70,6 +70,7 @@ docs/
     ISEHN_2026_EXAM.md the real Aug 2026 endterm: all 5 exercises solved + what the grader docked
     CHEAT_SHEET.md     one-file cheat sheet: JUnit, EasyMock, REST, black-box, UML, quiz, git, setup
     PRACTICE_QUESTIONS.md  new questions in the 2026 shapes, with answers
+    ISE_Master_Cheatsheet.md  the long Ctrl+F master cheat sheet (lectures + all past exams, tags like #easymock)
     pdfs/              the five original PDFs (Final Guide, black-box, if-in-test, component diagram, BIE setup)
     templates/         10 copy-paste templates (JUnit, parameterized, EasyMock, REST, black-box, Gherkin) + index
 ```
